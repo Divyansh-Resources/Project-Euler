@@ -1,0 +1,8 @@
+How many paths are there from the top-right to the bottom-left corner of a 20x20 grid, allowning only down and right movements ?
+
+No programming was necessary to solve this. It requires the insight of constructing a bijection in between a path and a string. 
+Every path uniquely corresponds to a string of length 40, and has 20 occurences of R and D each.
+To go from the top-right to bottom-left corner, it is necessary to go down exactly 20 times and go right exactly 20 times. 
+The different paths correspond to the differnt orders in which these movements are taken.
+
+\frac{40!}{20! 20!} = 137846528820 
