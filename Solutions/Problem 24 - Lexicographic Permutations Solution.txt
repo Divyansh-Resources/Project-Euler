@@ -1,0 +1,56 @@
+A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:
+
+012   021   102   120   201   210
+
+What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?
+
+---------------------------------------------------------
+
+There is brute force approach, which is to visit the permutations in lexicogrpahic order and display the millionth.
+
+-----------------------------------
+
+Alternate approach -Notice that if the first digit is fixed, the remaining 9 can be put in 9! ways.
+
+So, if first digit is 0, there are 9! arrangements, then if it is 1, there are another 9! arrangements. 
+3*9! is greater than million but 2*9! is not. So that means that the first digit will be 2.
+
+Similarly, if 2*9! + x*8! < million < 2*9! + (x+1)*8!, then the second element of the permutation will be the x-th available element (2 can't be counted).
+
+So, here's what I did. We write number as a string of digits a_{n} a_{n-1} a_{n-2}... a_0
+where number = \sum_{i=0}^n a_i \times i!
+The same string in the decimal system would mean \sum_{i=0}^n a_i \times 10^i
+The new representation is more convenient in visiting a tuple we want.
+The procedure is simple. We start with the highest 'place value' and find the highest multiplier for the place value which is smaller than num.
+Then, we repeat the process with process with (num-chosen_multiplier*place_value) for the remaining places.
+Everyone number has such a representation. An obvious upper bound an a_i is it should be less than or equal to i.
+If it is (i+1), then (i+1)*i = (i+1)! - the value of the next more significant place. That would mean that a better multiplier can be chosen for (i+1)th place.
+In the following function, that limit is enforced for every digit other than the most significant digits.
+A rigorous proof can be given that any number less than n! can be written in (n-1) digits in this representation using induction.
+So, if number is greater \sum_{i=0}^n (i) a_i, where n is the size of the representation array, then
+a_n will be greater than n.
+After that n will be reduced to a number that can be represented in (n-1) digits so there will be no further anamolies.
+The most significant digit doesn't have a more significant digit to delegate work to so it is possible for a_n to be greater than n.
+That and the trailing zeroes are two drawbacks of this procedure.
+It is somewhat analogous to overflow and underflow.
+
+------------------------------------------------------------------------------------
+
+My approach has these main steps - 
+1. Convert the number to the new base.
+2. There is a bijection in between permutation #number and number -1 . Use (number -1)'s representation to get the permutation.
+
+3.If the i-th digit of number-1 is a_i, then the i-th element of the tuple is the a_i-th smallest available element i.e. smallest element not already written.
+(When I say a_i-th smallest element, I mean starting from zero. Since the i-th digit can also be zero. If the i-th digit is 0, the smallest available element is taken.
+If it is 1, the second smallest, and so on.
+So, it is technically the a_(i)+1 th smallest available element that must be taken.
+However, for ease of understanding, the counter that counts available elements in ascending order also starts from zero.
+So, the available_count goes from 0 -> current_digit (which is a_i). 
+Whichever element sends available_count to current_digit gets added to the tuple at the i-th position and then becomes unavailable.)
+
+---------------------------------------------------------------------------------------------
+
+Note - Both the tuple and the number's representation must be printed from most significant to least significant. So, the loop counts down not up.
+I forgot (0000000000) corresponds with the first tuple. Which is why permutation #N corresponds with N-1.
+
+Answer is 2783915460. Takes about 20 ms.
