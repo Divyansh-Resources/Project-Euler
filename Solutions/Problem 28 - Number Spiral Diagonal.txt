@@ -1,0 +1,40 @@
+Starting with the number 1 and moving to the right in a clockwise direction a 5 by 5 spiral is formed as follows:
+
+21 22 23 24 25
+20  7  8  9 10
+19  6  1  2 11
+18  5  4  3 12
+17 16 15 14 13
+
+It can be verified that the sum of the numbers on the diagonals (both) is 101.
+
+What is the sum of the numbers on the diagonals in a 1001 by 1001 spiral formed in the same way?
+
+
+-------------------------------
+
+I'm very embarassed to admit I did a brute force solution for this first when I couldn't spot a pattern in between
+M(i,j) and (i,j).
+
+Visit the matrix elements in the following way - 
+Start in the middle element
+At the end of a cycle, move from (i,j) to (i, j+1) and then visit the square anti-clockwise
+The cycle ends at (i-1, j+1).
+Each (i,j) contains a number n, which is the number at which it was visited.
+
+I constructed the matrix and then wrote a function to find the sum of the diagonal and the antidiagonal.
+
+This takes 8-9ms. For some reason, it doesn't take the same amount of time to execute every time.
+---------------
+
+Then, I realised that I don't need to find the relationship between every M(i,j) and (i,j). I only need a rule for every corner element.
+It's simple then.
+i^2, i^2 - i  + 1, i^2 - 2i + 2, i^2 - 3i + 3
+Where i is the odd numbers, and the order of the current square.
+
+
+All I had to do was sum over the quadratic (4i^2 - 6i + 6) + 1 [Because this rule doesn't account for the middle element]. This took about 2 ms.
+Doesn't even need a computer. I could just write the sum as a function of n instead and then change the limits of summation and get a closed form and use a calculator.
+But, thinking of the rule to populate the spiral was challenging and rewarding, even if it wasn't required to answer this question.
+
+Answer is  669171001
