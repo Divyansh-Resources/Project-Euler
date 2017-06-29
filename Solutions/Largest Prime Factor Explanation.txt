@@ -1,0 +1,5 @@
+
+Do simple prime factorisation ... 
+Happens in O(root(n)) time.
+
+Largest Prime Factor of 600851475143 is 6857
