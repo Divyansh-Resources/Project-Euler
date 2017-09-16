@@ -1,0 +1,52 @@
+
+
+----------------------------------------------------------------
+
+Use a sieve and then check for 4 numbers with 4 distinct prime factors.
+
+-----------------------------------------
+
+void sieve_and_precompute(vector <int> &no_of_disinct_prime_factors, int LIMIT)
+{
+    for(int i = 2; i <= LIMIT; i++)
+    {
+        if(no_of_disinct_prime_factors[i] == 0)
+        {
+            for(int multiple = 2*i; multiple <= LIMIT; multiple += i)
+            {
+                no_of_disinct_prime_factors[multiple]++;
+            }
+        }
+    }
+}
+
+int main()
+{
+    const int LIMIT = 2e6;
+    vector <int> no_of_disinct_prime_factors(LIMIT + 2, 0);
+    sieve_and_precompute(no_of_disinct_prime_factors, LIMIT);
+
+    int k = 4;
+    for(int i = 2; i <= LIMIT; i++)
+    {
+        int k_solution_found = true;
+
+        for(int current = 0; current < k; current++)
+        {
+            if(no_of_disinct_prime_factors[i + current] != k)
+                k_solution_found = false;
+        }
+
+        if(k_solution_found)
+        {
+            printf("The first four numbers which have 4 consecutive distinct prime factors are %d, %d, %d and %d.\n", i, i+1, i+2, i+3);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+-------------------------------------------------------------------------
+
+The first four numbers which have 4 consecutive distinct prime factors are 134043, 134044, 134045 and 134046.
