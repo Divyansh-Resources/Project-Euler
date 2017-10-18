@@ -1,0 +1,71 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+void precompute(vector <int> &abundant_numbers, vector <int> &is_abundant, int LIMIT)
+{
+    vector <int> largest_prime_factor(LIMIT, 0);
+    vector <int> divisor_sum(LIMIT, 1);
+
+    for(int i = 2; i <= LIMIT; i++)
+    {
+        if(largest_prime_factor[i] ==  0)
+        {
+            for(int multiple = i; multiple <= LIMIT; multiple += i)
+                largest_prime_factor[multiple] = i;
+        }
+
+        int reduced_i = i;
+        int p = largest_prime_factor[i];
+        int p_power_alpha = 1;
+
+        while(reduced_i%p == 0)
+        {
+            p_power_alpha *= p;
+            reduced_i /= p;
+        }
+
+        int gp_sum = (p*p_power_alpha - 1)/(p - 1);
+        divisor_sum[i] = gp_sum*divisor_sum[reduced_i];
+    }
+
+    for(int i = 1; i < LIMIT; i++)
+    {
+        if(divisor_sum[i] > 2*i)
+        {
+            is_abundant[i] = true;
+            abundant_numbers.push_back(i);
+        }
+    }
+}
+
+int main()
+{
+    const int LIMIT = 28123;
+    vector <int> is_abundant(LIMIT, false);
+    vector <int> abundant_numbers;
+    precompute(abundant_numbers, is_abundant, LIMIT);
+
+    int sum = 0;
+
+    for(int i = 1; i < LIMIT; i++)
+    {
+        int sum_possible = false;
+
+        for(int j = 0; j < abundant_numbers.size() && abundant_numbers[j] < i ; j++)
+        {
+            if(is_abundant[i - abundant_numbers[j]])
+            {
+                sum_possible = true;
+                break;
+            }
+        }
+
+        if(!sum_possible)
+            sum += i;
+    }
+
+    printf("The sum of all numbers that can't be written as the sum of two abundant numbers %d\n", sum);
+    return 0;
+}
