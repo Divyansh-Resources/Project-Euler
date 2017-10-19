@@ -1,0 +1,71 @@
+
+
+------------------------------------------------
+
+Alright - 
+
+Observation 1 - A pile is losing for the current player if the XOR of the three piles is 0.
+
+This is because any move the current player makes will change the bitwise XOR from 0 to something else and the next player can make it 0 again.
+
+The configuration (0, 0, 0) has bitwise XOR = 0 and this is only achieved after the next player's turn.
+
+If the bitwise XOR is non-zero, then the first player finds himself in the winning situation found above.
+
+Observation 2 - Let us look at 1, 2, 3 and 2, 4, 6 in binary
+
+1 = 001, 2 = 010, 3 = 011
+
+2 = 010, 4 = 100, 6 = 110
+
+Now, if n is a binary string b1.b2.b3....bk, then 2n = b1.b2...bk.0
+
+3n = n + 2n
+
+Now, for the XOR of (n, 2n, 3n) to be = 0
+
+3n must have all the bits in n and 2n and no more. For this to happen, n must have no consecutive 1s.
+
+If n has 2 consecutive 1s ..., then at some position n, 2n and 3n will have exactly 1 bit set.
+
+Observation 3 - How do we count the number of binary strings with no consecutive 1s ?
+
+Let the binary string have n places. 
+The first digit may be 0, in which case the rest of the string can be chosen in f(n - 1) ways.
+The first digit may be 1. The second is forced to be 0. Rest in f(n - 2) ways.
+
+f(n) = f(n - 1) + f(n - 2)
+
+2^30 has 31 digits. We shouldn't count any number greater than 2^30.
+
+So, we count all valid strings of length 30. 
+
+(We shouldn't count all valid strings of length 31 because we would get some strings that are greater than 2^30.)
+
+The string 1 000...000 (30 times) corresponds to the string of all 0s.
+
+So, f(1) = 2 {0, 1}, f(2) = 3 {00, 01, 10}
+
+Actually a very elegant problem. Started out with Nim, deduced a winning strategy, studied the property of numbers in binary and then a Fibonacci recurrence !
+
+---------------------------------------------------------------------------
+
+int main()
+{
+    const int MAX_LENGTH = 30;
+
+    vector <int> no_of_strings(MAX_LENGTH + 1);
+
+    no_of_strings[1] = 2;
+    no_of_strings[2] = 3;
+
+    for(int i = 3; i <= MAX_LENGTH; i++)
+    {
+        no_of_strings[i] = no_of_strings[i - 1] + no_of_strings[i - 2];
+    }
+
+    printf("The number of numbers up to 2^30 with no consecutive 1s is %d\n", no_of_strings[MAX_LENGTH]);
+    return 0;
+}
+
+
