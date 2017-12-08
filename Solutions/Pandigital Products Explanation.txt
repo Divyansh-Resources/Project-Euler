@@ -1,0 +1,73 @@
+
+Very Interesting Question.
+
+The main observation is that if a number c, can be written as 
+a x b = c, where the triplet (a, b, c) is pandigital, then c HAS to have 4 digits.
+
+Let us say c has 3 digits. Then a and b must have 3 digits each to make up the pandigital combination. We know this is never possible.
+
+Let us say c has 5 digits. c cannot be written as the product of a 3-digit and 1-digit, or two 2-digit numbers.
+
+Smaller than 4 and greater than 4 is not possible. This leaves us with amount 1e5 numbers. Factorise each of them and check.
+
+-------------------------------------------------------------
+
+void get(int frequency[], int n)
+{
+    while(n)
+    {
+        frequency[n%10]++;
+        n /= 10;
+    }
+}
+
+int is_pandigital(int a, int b, int c)
+{
+    const int NO_OF_DIGITS = 10;
+    int digit_frequency[NO_OF_DIGITS] = {0};
+
+    get(digit_frequency, a);
+    get(digit_frequency, b);
+    get(digit_frequency, c);
+
+    if(digit_frequency[0] > 0) return false;
+
+    for(int i = 1; i <= 9; i++)
+        if(digit_frequency[i] != 1)
+            return false;
+
+    return true;
+}
+
+int main()
+{
+    const int SMALLEST_4_DIGIT = 1000, LARGEST_4_DIGIT = 10000 - 1;
+    int pandigital_sum = 0;
+
+    for(int i = SMALLEST_4_DIGIT; i <= LARGEST_4_DIGIT; i++)
+    {
+        for(int j = 2; j*j <= i; j++)
+        {
+            if(i%j == 0 && is_pandigital(j, i/j, i))
+            {
+                printf("%d x %d = %d\n", j, i/j, i);
+                pandigital_sum += i;
+                break;
+            }
+        }
+    }
+
+    printf("The sum of all such numbers is %d.\n", pandigital_sum);
+    return 0;
+}
+
+--------------------------------------------
+
+28 x 157 = 4396
+18 x 297 = 5346
+12 x 483 = 5796
+4 x 1738 = 6952
+39 x 186 = 7254
+48 x 159 = 7632
+4 x 1963 = 7852
+The sum of all such numbers is 45228.
