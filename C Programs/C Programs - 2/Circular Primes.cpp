@@ -1,0 +1,79 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+int get_no_of_digits(int n)
+{
+    int no_of_digits = 0;
+    while(n)
+    {
+        no_of_digits++;
+        n /= 10;
+    }
+
+    return no_of_digits;
+}
+
+int rotate(int n)
+{
+    int last_digit = n%10;
+
+    n = n/10;
+    int no_of_digits = get_no_of_digits(n);
+
+    while(no_of_digits--)
+        last_digit *= 10;
+
+    return (last_digit + n);
+}
+
+int get_no_of_circular_primes(int LIMIT)
+{
+    vector <int> is_prime(LIMIT + 1, true);
+    vector <int> primes;
+    is_prime[0] = is_prime[1] = false;
+
+    for(int i = 2; i <= LIMIT; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] <= LIMIT; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+
+    int no_of_circular_primes = 0;
+    for(int i = 1; i <= LIMIT; i++)
+    {
+        int is_circular_prime = true;
+        int rotation = i;
+
+        do
+        {
+            if(!is_prime[rotation])
+                is_circular_prime = false;
+
+            rotation = rotate(rotation);
+
+        }while(rotation != i && is_circular_prime);
+
+        no_of_circular_primes += is_circular_prime;
+    }
+
+    return no_of_circular_primes;
+}
+
+int main()
+{
+    int LIMIT = 1e6;
+    int no_of_circular_primes = get_no_of_circular_primes(LIMIT);
+
+    printf("There are %d circular primes below %d.\n", no_of_circular_primes, LIMIT);
+
+    return 0;
+}
