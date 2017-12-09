@@ -1,0 +1,47 @@
+
+Normal Brute Force works. Search Space is small.
+
+----------------------------------------------------
+
+int main()
+{
+    const int SMALLEST_3_DIGIT = 100, LARGEST_3_DIGIT = 999;
+    int largest_product = 0;
+
+    for(int i = SMALLEST_3_DIGIT; i <= LARGEST_3_DIGIT; i++)
+    {
+        for(int j = i + 1; j <= LARGEST_3_DIGIT; j++)
+        {
+            if(is_palindrome(i*j)) printf("%d\n", i*j), largest_product = max(largest_product, i*j);
+        }
+    }
+
+    printf("Largest = %d\n", largest_product);
+    return 0;
+}
+
+------------------------------------------------------------
+
+747747
+804408
+807708
+737737
+780087
+802208
+828828
+749947
+801108
+821128
+793397
+809908
+853358
+840048
+855558
+828828
+819918
+824428
+906609
+886688
+861168
+888888
+Largest = 906609
