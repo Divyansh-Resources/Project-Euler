@@ -1,0 +1,56 @@
+
+int reverse(int n, int base)
+{
+    int rev = 0;
+
+    while(n)
+    {
+        rev = rev*base + n%base;
+        n /= base;
+    }
+
+    return rev;
+}
+
+int is_palindrome(int n, int base)
+{
+    return (n == reverse(n, base));
+}
+
+int main()
+{
+    const int N = 1e6;
+
+    int double_palindrome_sum = 0;
+    for(int i = 1; i < N; i++)
+    {
+        if(is_palindrome(i, 10) && is_palindrome(i, 2))
+            printf("%d\n", i), double_palindrome_sum += i;
+    }
+
+    printf("The sum of double base palindromes is %d.\n", double_palindrome_sum);
+    return 0;
+}
+
+-----------------------------------------------------
+
+1
+3
+5
+7
+9
+33
+99
+313
+585
+717
+7447
+9009
+15351
+32223
+39993
+53235
+53835
+73737
+585585
+The sum of double base palindromes is 872187.
