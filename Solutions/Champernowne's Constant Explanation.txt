@@ -1,0 +1,57 @@
+
+This problem is surprisingly simple. It's just elegant implementation.
+
+Build a vector of numbers that represents Champernowne's constant. After that it's quite simple.
+
+O(n k), where k is the factor required to convert each number into a vector and reverse it ... since no number has more than 6 digits in the range, it's negligible.
+
+---------------------------------------------------
+
+vector <int> to_vector(int n)
+{
+    vector <int> number;
+    while(n)
+    {
+        number.push_back(n%10);
+        n /= 10;
+    }
+
+    reverse(number.begin(), number.end());
+    return number;
+}
+
+int main()
+{
+    vector <int> number;
+    number.push_back(0);
+
+    const int LIMIT = 1e6;
+    for(int i = 1; i < LIMIT; i++)
+    {
+        vector <int> n = to_vector(i);
+
+        for(int j = 0; j < n.size(); j++)
+            number.push_back(n[j]);
+    }
+
+    long long product = 1;
+    for(int digit = 1; digit <= LIMIT; digit *= 10)
+    {
+        //printf("Digit(%d) = %d\n", digit, number[digit]);
+        product *= number[digit];
+    }
+
+    printf("%I64d\n", product);
+    return 0;
+}
+
+-----------------------------------------------------------------------
+
+Digit(1) = 1
+Digit(10) = 1
+Digit(100) = 5
+Digit(1000) = 3
+Digit(10000) = 7
+Digit(100000) = 2
+Digit(1000000) = 1
+210
