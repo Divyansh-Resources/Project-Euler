@@ -1,0 +1,59 @@
+
+First, I checked the number of divisors in the first million triangular numbers too see the maximum number of divisors
+
+Then, I saw that the maximum is over 3000 so big integers is not required.
+
+T(n) = ( n*(n + 1) )/2
+
+no of divisors is a multiplicative function.
+
+f(t(n)) = f(n/2)f(n + 1), if n is even
+        = f(n)f( (n + 1)/2), if n is odd.
+
+---------------------------------------------------
+
+int divisors(int n)
+{
+    int no_of_divisors = 0;
+
+    for(int i = 1; i*i <= n; i++)
+    {
+        if(n%i == 0)
+        {
+            if(i*i == n)
+                no_of_divisors++;
+            else
+                no_of_divisors += 2;
+        }
+    }
+
+    return no_of_divisors;
+}
+
+long long triangular_number(long long n)
+{
+    return (n*(n + 1))/2;
+}
+
+int main()
+{
+    const int REQUIRED_DIVISORS = 500;
+
+    for(int n = 1; ; n++)
+    {
+        int no_of_divisors = (n%2 == 0 ? divisors(n >> 1)*divisors(n + 1) : divisors(n)*divisors( (n + 1) >> 1));
+
+        if(no_of_divisors > REQUIRED_DIVISORS)
+        {
+            printf("Triangular no %d = %I64d has %d divisors.\n", n, triangular_number(n), no_of_divisors);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+----------------------------------------------------------------
+
+Triangular no 12375 = 76576500 has 576 divisors.
+
