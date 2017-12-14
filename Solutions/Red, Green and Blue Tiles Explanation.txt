@@ -1,0 +1,40 @@
+
+Let f(n) denote the number of ways to tile a plane of n blocks.
+
+Now, the first tile may be black - leaving n - 1 tiles.
+Or red, - n - 2
+Or green, n- 3
+Or blue, n - 4
+
+So, depending on the first tile, we get the following recurrence 
+
+f(n) = f(n - 1) + f(n - 2) + f(n - 3) + f(n - 4)
+
+Now, the base cases for n < 4 ...
+
+Let, f(0) = f(1) = 1
+
+f(2) = f(1) + f(0) [First tile Either black or red]
+f(3) = f(2) + f(1) + f(0) [First tile Either black, red or green]
+
+------------------------------------------------
+
+int main()
+{
+    const int BLOCKS = 50;
+
+    vector <long long> tilings(BLOCKS + 1, 1);
+
+    tilings[2] = tilings[1] + tilings[0];
+    tilings[3] = tilings[2] + tilings[1] + tilings[0];
+
+    for(int i = 4; i <= BLOCKS; i++)
+        tilings[i] = tilings[i - 1] + tilings[i - 2] + tilings[i - 3] + tilings[i - 4];
+
+    printf("There are %I64d ways of tiling %d blocks.\n", tilings[BLOCKS], BLOCKS);
+    return 0;
+}
+
+-----------------------------------------------
+
+There are 100808458960497 ways of tiling 50 blocks.

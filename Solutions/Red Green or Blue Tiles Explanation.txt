@@ -1,0 +1,55 @@
+
+Let us solve the question seperately for each colour.
+
+let r(n) denote the number of ways to tile a plane of length n with red AND black tiles
+
+The first tile may be either red or black
+
+r(n) = r(n - 2) + r(n - 1)
+
+r(0) = r(1) = 1
+
+so, for this question we need R = (r(n) - 1) ... Subtract one to discount the case where only black tiles are used
+
+Similarly,
+
+g(n) = g(n - 3) + g(n - 1)
+
+g(0) = g(1) = g(2) = 1
+
+And
+
+b(n) = b(n - 4) + b(n - 1), 
+
+b(0) = b(1) = b(2) = b(3) = 1
+
+Ans = (r(n) - 1) + (g(n) - 1) + (b(n) - 1)
+
+----------------------------------------------
+
+int main()
+{
+    const int BLOCKS = 50;
+
+    vector <long long> red(BLOCKS + 1, 1);
+    for(int i = 2 ; i <= BLOCKS; i++)
+        red[i] = red[i - 1] + red[i - 2];
+
+    vector <long long> green(BLOCKS + 1, 1);
+    for(int i = 3 ; i <= BLOCKS; i++)
+        green[i] = green[i - 1] + green[i - 3];
+
+    vector <long long> blue(BLOCKS + 1, 1);
+    for(int i = 4; i <= BLOCKS; i++)
+        blue[i] = blue[i - 1] + blue[i - 4];
+
+    long long total_red = red[BLOCKS] - 1, total_green = green[BLOCKS] - 1, total_blue = blue[BLOCKS] - 1;
+    long long total = total_red + total_green + total_blue;
+
+    printf("There are %I64d ways to tile %d blocks.\n", total, BLOCKS);
+    return 0;
+}
+
+-----------------------------------------
+
+There are 20492570929 ways to tile 50 blocks.
