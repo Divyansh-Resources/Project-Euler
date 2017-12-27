@@ -1,0 +1,42 @@
+
+The first block may be black, and the rest can be done in f(n - 1) ways.
+
+Or It may start with 3-red, in that case, there must be RRRB f(n - 4)
+
+Or it may have a 4-red, RRRRB f(n - 5)
+
+And so on ...
+
+f(n) = f(n - 1) + f(n - 4) + f(n - 5) + ... + f(0) + 1 [The last 1 is for all red]
+
+Now, f(n - 1) = f(n - 2) + f(n - 5) + ... + f(0) + 1
+
+f(n) = f(n - 1) + f(n - 4) + [f(n - 1) - f(n - 2)]
+
+---------------------------------------------------------
+
+f(n) = 2f(n - 1) - f(n - 2) + f(n - 4)
+
+This can be computed in O(n) time.
+
+-------------------------------------------------
+
+int main()
+{
+    const int N = 50;
+    vector <long long> no_of_ways(50 + 1, 1);
+
+    no_of_ways[3] = 2;
+
+    for(int n = 4; n <= N; n++)
+    {
+        no_of_ways[n] = 2*no_of_ways[n - 1] - no_of_ways[n - 2] + no_of_ways[n - 4];
+    }
+
+    printf("There are %I64d ways to tile %d blocks.\n", no_of_ways[N], N);
+    return 0;
+}
+
+--------------------------------------------------------
+
+There are 16475640049 ways to tile 50 blocks.
