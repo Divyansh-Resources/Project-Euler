@@ -1,0 +1,50 @@
+
+To count the tilings, notice that the first block may be a black tile of size 1.
+Or it may be a red tile of any size >= m.
+
+If we have a red tile of size r, the tile at position r+1 is forced to be black. (Otherwise, we'd have a red tile of size r + 1)
+
+Lastly, all red is also a valid combination.
+
+We get the following recurrence, where f(n) is the number of ways to tile a plane of length n - 
+
+f(n) = f(n - 1) + f(n - (m + 1)) + f(n - (m + 2)) + f(n - (m + 3)) + ... + f(0) + 1
+
+f(n - 1) = f(n - 2) + f(n - 1 - (m + 1)) + .... + f(0) + 1
+
+Putting it back in the first equation, we can see
+
+f(n) = 2f(n - 1) - f(n - 2) + f(n - m - 1)
+
+f(n) = 1, if n < m
+f(m) = 2, [All black and all red]
+
+-------------------------------------------------------
+
+Now, we can find it in O(n) time and the terms grow rapidly, we can find out the value quite easily < 200.
+
+int main()
+{
+    const int N = 200, M = 50, THRESHOLD = 1e6;
+    vector <int> no_of_ways(N, 1);
+
+    no_of_ways[M] = 2;
+
+    for(int n = M + 1; n < N; n++)
+    {
+        no_of_ways[n] = 2*no_of_ways[n - 1] - no_of_ways[n - 2] + no_of_ways[n - M - 1];
+
+        if(no_of_ways[n] > THRESHOLD)
+        {
+            printf("The minimum value of the plane for the number of tilings > %d with minimum size of red = %d is = %d.\n", THRESHOLD, M, n);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+---------------------------------------------------
+
+The minimum value of the plane for the number of tilings > 1000000 with minimum size of red = 50 is = 168.
+
