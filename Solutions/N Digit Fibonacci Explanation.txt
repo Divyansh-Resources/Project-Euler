@@ -1,0 +1,30 @@
+Firstly, let us discuss how we can find the number of digits in the n-th Fibonacci number ?
+
+The n-th Fibonacci number = 1/root(5) phi^n - x, where x is negligible as n is large. 
+
+So, the number of digits in the n-th Fibonacci number = log(phi^n/root(5)) = n log phi - log(5)/2
+
+
+In O(1) time, we simply notice that 10^{n - 1} has n digits. 
+
+So log(10^(n - 1)) = log(F_x)
+
+notice that we can't just set n = log(F_x), as we need to take CEIL FIRST. 
+
+So, to overcome this issue we just equate the logs rather than the numbers. 
+
+(n - 1) = x log phi - log(5)/2
+
+Make x the subject of the equation and we are done !
+
+int main()
+{
+    const int NO_OF_DIGITS = 100;
+
+    const double PHI = 1.618033987;
+    int answer = ceil( (NO_OF_DIGITS - 1 + log10(5)/2)/(log10(PHI)) );
+
+    cout << answer << "\n";
+
+    return 0;
+}
